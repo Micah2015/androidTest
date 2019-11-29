@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         if (mService != null) {
             try {
                 Student stu = mService.getStudent();
-                Toast.makeText(MainActivity.this, "Name: " + stu.getName() + ", " + "age: " + Integer.toString(stu.getAge()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, JniTest.getString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Name: " + stu.getName() + ", " + "age: " + Integer.toString(stu.getAge()), Toast.LENGTH_SHORT).show();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
