@@ -11,14 +11,16 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.Vector;
+import com.example.libtestsrv.IMySrvInterface;
+import com.example.libtestsrv.MyService;
 
-public class MainActivity extends AppCompatActivity {
-    private IMyAidlInterface mService;
+public class TestSrvActivity extends AppCompatActivity {
+    private IMySrvInterface mService;
     private ServiceConnection mConnection = new ServiceConnection() {
+
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = IMyAidlInterface.Stub.asInterface(service);
+            mService = IMySrvInterface.Stub.asInterface(service);
         }
 
         @Override
@@ -30,27 +32,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test_srv);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        startActivity(new Intent(MainActivity.this, TestSrvActivity.class));
 
-//        final Intent in = new Intent();
-//        in.setClassName(this, "com.example.aidltest.MyAidlService");
-//        in.setPackage("com.example.aidltest");
-//        in.setAction("com.example.aidltest.MyAidlService");
-//        bindService(in, mConnection, BIND_AUTO_CREATE);
+        final Intent in = new Intent(this, MyService.class);
+        bindService(in, mConnection, BIND_AUTO_CREATE);
     }
 
-    public void click(View view) {
+
+    public void testOnClick(View view) {
         if (mService != null) {
             try {
-                Student stu = mService.getStudent();
-                Toast.makeText(MainActivity.this, JniTest.getString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(MainActivity.this, "Name: " + stu.getName() + ", " + "age: " + Integer.toString(stu.getAge()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, mService.getOne().dump(), Toast.LENGTH_SHORT).show();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
