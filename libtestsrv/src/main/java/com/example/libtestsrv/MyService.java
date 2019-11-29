@@ -8,12 +8,22 @@ import android.os.RemoteException;
 import java.util.Random;
 
 public class MyService extends Service {
+
+    private static MyBinder instance = null;
+
     public MyService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new MyBinder();
+        if(instance == null) {
+            synchronized (MyBinder.class) {
+                if(instance == null) {
+                    instance = new MyBinder();
+                }
+            }
+        }
+        return instance;
     }
 
     class MyBinder extends IMySrvInterface.Stub {
